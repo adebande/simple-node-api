@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
-const names = require('./names.json')
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
+const Name= require('./models/name.js')
+
+mongoose.connect('mongodb://localhost:27017/name', {useNewUrlParser: true, useUnifiedTopology: true});
 
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -15,17 +16,26 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.get('/names', (req,res) => {
-    res.status(200).json(names)
+    Name.find(function(err, names){
+        if (err){
+            res.send(err); 
+        }
+        res.status(200).json(names); 
+    })
 })
 
 app.post('/names', (req,res) => {
-    names.push({'name':req.query.name})
-    res.status(200).json(names)
+    var name = new Name();
+      name.name = req.query.name;
+      name.save(function(err){
+        if(err){
+          res.send(err);
+        }
+        res.status(200).json(name); 
+      })
 })
 
 
 app.listen(8080, () => {
     console.log('Listening on http://localhost:8080')
 })
-
-module.exports = app
