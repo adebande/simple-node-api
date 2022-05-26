@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 
 const Name= require('./models/name.js')
 
-mongoose.connect('mongodb://localhost:27017/name', {useNewUrlParser: true, useUnifiedTopology: true});
+require("dotenv").config();
+const dbconfig= require('./config/db.config')
+
+mongoose.connect(dbconfig.url);
 
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -35,7 +38,7 @@ app.post('/names', (req,res) => {
       })
 })
 
-
-app.listen(8080, () => {
-    console.log('Listening on http://localhost:8080')
+const PORT = process.env.NODE_DOCKER_PORT || 8080;
+app.listen(PORT, () => {
+    console.log('Listening on http://localhost:'+ PORT)
 })
