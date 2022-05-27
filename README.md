@@ -12,12 +12,22 @@ git clone https://github.com/adebande/simple-node-api.git
 mv .env.example .env
 docker-compose up
 ```
+
 ### Kubernetes
 ```bash
 git clone https://github.com/adebande/simple-node-api.git
 mv .env.example .env
 kubectl create secret generic app-secrets --from-env-file=.env
 kubectl apply -f kubernetes/.
+```
+
+### Kubernetes (Minikube)
+```bash
+git clone https://github.com/adebande/simple-node-api.git
+mv .env.example .env
+minikube kubectl -- create secret generic app-secrets --from-env-file=.env
+minikube kubectl -- apply -f kubernetes/.
+minikube tunnel
 ```
 
 ## :bulb: Utilisation
