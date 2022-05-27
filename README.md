@@ -2,6 +2,8 @@
 
 # Simple Node API
 
+Une application simple composée de deux micro-services : une API (Express.js), et une base de données MongoDB.
+
 ## :rocket: Installation 
 
 ### Docker Compose
