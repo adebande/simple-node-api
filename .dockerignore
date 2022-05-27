@@ -3,3 +3,6 @@ kubernetes
 node_modules
 npm-debug.log
 .env
+.env.example
+Dockerfile
+docker-compose.yml
