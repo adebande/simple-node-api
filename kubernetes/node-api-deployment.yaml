@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
       - image: adbd/simple-node-api
+        imagePullPolicy: Always
         name: simple-node-api
         env:
         - name: DB_HOST
