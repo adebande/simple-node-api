@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: node-api
+  name: node-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: node-api
+    spec:
+      containers:
+      - image: adbd/simple-node-api
+        name: simple-node-api
+        env:
+        - name: DB_HOST
+          value: "mongo"
+        - name: DB_PORT
+          value: "27017"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MONGODB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MONGODB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MONGODB_DATABASE
