@@ -9,6 +9,7 @@ Une application simple composée de deux micro-services : une API (Express.js), 
 ### Docker Compose
 ```bash
 git clone https://github.com/adebande/simple-node-api.git
+cd simple-node-api
 mv .env.example .env
 docker-compose up
 ```
@@ -16,6 +17,7 @@ docker-compose up
 ### Kubernetes
 ```bash
 git clone https://github.com/adebande/simple-node-api.git
+cd simple-node-api
 mv .env.example .env
 kubectl create secret generic app-secrets --from-env-file=.env
 kubectl apply -f kubernetes/.
@@ -24,6 +26,7 @@ kubectl apply -f kubernetes/.
 ### Kubernetes (Minikube)
 ```bash
 git clone https://github.com/adebande/simple-node-api.git
+cd simple-node-api
 mv .env.example .env
 minikube kubectl -- create secret generic app-secrets --from-env-file=.env
 minikube kubectl -- apply -f kubernetes/.
@@ -32,13 +35,13 @@ minikube tunnel
 
 ## :bulb: Utilisation
 
-Une fois installée via Docker Compose ou Kubernetes, l'application est accessible depuis l'URL suivante :
+Une fois installée (via Docker Compose ou Kubernetes), l'application est accessible depuis l'URL suivante :
 
 > http://localhost:8080
 
 ### Routes 
 
 |                |Méthode      |Route        |Paramètres          |
-|----------------|-------------|----------   |--------------------|
+|----------------|-------------|-------------|--------------------|
 |Liste des noms  |GET          |`/names`     |                    |
 |Nouveau nom     |POST         |`/names`     |?name=**votre_nom** |
