@@ -16,7 +16,7 @@ spec:
         app: node-api
     spec:
       containers:
-      - image: adbd/simple-node-api
+      - image: adbd/simple-node-api:latest
         imagePullPolicy: Always
         name: simple-node-api
         env:
