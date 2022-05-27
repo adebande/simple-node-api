@@ -1,0 +1,54 @@
+name: Deploy
+on:
+  push:
+    tags:
+      - 'v*' 
+
+jobs:
+  build:
+    name: Build and deploy image
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Wait for tests
+          uses: lewagon/wait-on-check-action@v1.0.0
+          with:
+            ref: ${{ github.ref }}
+            check-name: 'Run tests'
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            wait-interval: 10
+        - name: Docker meta
+          id: meta
+          uses: docker/metadata-action@v4
+          with:
+            images: adbd/simple-node-api
+        - name: Login to DockerHub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+        - name: Build and push
+          uses: docker/build-push-action@v3
+          with:
+            context: .
+            tags: ${{ steps.meta.outputs.tags }}
+            labels: ${{ steps.meta.outputs.labels }}
+            
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: Build and deploy image
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
